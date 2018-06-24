@@ -1,0 +1,35 @@
+{
+    "name": "com.psyclops.puzzle2048",
+    "displayName": "Puzzle 2048",
+    "private": true,
+    "scripts": {
+        "build": "webpack --mode=development && cordova prepare",
+        "pack": "webpack --mode=production"
+    },
+    "dependencies": {
+        "cordova-android": "^7.0.0",
+        "cordova-browser": "^5.0.3",
+        "cordova-plugin-whitelist": "^1.3.3",
+        "phaser": "^3.10.1"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        },
+        "platforms": [
+            "android",
+            "browser"
+        ]
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "babel-preset-env": "^1.7.0",
+        "clean-webpack-plugin": "^0.1.19",
+        "file-loader": "^1.1.11",
+        "html-webpack-plugin": "^3.2.0",
+        "uglifyjs-webpack-plugin": "^1.2.6",
+        "webpack": "^4.12.1",
+        "webpack-command": "^0.2.1"
+    }
+}
