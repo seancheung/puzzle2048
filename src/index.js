@@ -1,18 +1,19 @@
-import * as Phaser from 'phaser';
+import { AUTO, Game } from 'phaser';
 import Boot from './scenes/boot';
+import { GRAVITY } from './config';
 
 const config = {
-    type: Phaser.AUTO,
+    type: AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
     physics: {
         default: 'arcade',
-        arcade: { gravity: { y: 200 } }
+        arcade: { gravity: { y: GRAVITY } }
     },
     scene: Boot
 };
 
-const game = new Phaser.Game(config);
+const game = new Game(config);
 window.addEventListener(
     'resize',
     () => game.resize(window.innerWidth, window.innerHeight),

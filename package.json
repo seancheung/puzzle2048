@@ -3,8 +3,10 @@
     "displayName": "Puzzle 2048",
     "private": true,
     "scripts": {
-        "build": "webpack --mode=development && cordova prepare",
-        "pack": "webpack --mode=production"
+        "dev": "webpack --mode=development && cordova prepare browser",
+        "pack": "webpack --mode=production",
+        "serve": "cordova run browser",
+        "build:android": "npm run pack && cordova build android"
     },
     "dependencies": {
         "cordova-android": "^7.0.0",

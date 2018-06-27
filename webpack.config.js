@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -14,7 +15,7 @@ module.exports = mode => {
             rules: [
                 { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
                 {
-                    test: /\/res\/assets\//,
+                    test: /[\\/]res[\\/]assets[\\/]/,
                     use: [
                         {
                             loader: 'file-loader',
@@ -25,30 +26,23 @@ module.exports = mode => {
                 { test: /\.(vert|frag)$/, use: 'raw-loader' }
             ]
         },
-        resolve: { alias: { res: path.resolve(__dirname, 'res/assets') } },
+        resolve: { alias: { assets: path.resolve(__dirname, 'res/assets') } },
         optimization: {
             splitChunks: {
-                chunks: 'all',
-                minSize: 30000,
-                minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
-                automaticNameDelimiter: '~',
-                name: true,
                 cacheGroups: {
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        priority: -10
-                    },
-                    default: {
-                        minChunks: 2,
-                        priority: -20,
-                        reuseExistingChunk: true
+                        name: 'vendors',
+                        chunks: 'all'
                     }
                 }
             }
         },
         plugins: [
+            new webpack.DefinePlugin({
+                CANVAS_RENDERER: true,
+                WEBGL_RENDERER: true
+            }),
             new CleanWebpackPlugin(['www/*'], {
                 root: __dirname,
                 exclude: ['.gitignore']
