@@ -1,16 +1,15 @@
 import { AUTO, Game } from 'phaser';
+import { BACKGROUND } from './config';
 import Boot from './scenes/boot';
-import { GRAVITY } from './config';
+import Main from './scenes/main';
 
 const config = {
     type: AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
-    physics: {
-        default: 'arcade',
-        arcade: { gravity: { y: GRAVITY } }
-    },
-    scene: Boot
+    backgroundColor: BACKGROUND,
+    autoFocus: true,
+    scene: [Boot, Main]
 };
 
 const game = new Game(config);
@@ -19,6 +18,5 @@ window.addEventListener(
     () => game.resize(window.innerWidth, window.innerHeight),
     false
 );
-window.game = game;
 
 export default game;
