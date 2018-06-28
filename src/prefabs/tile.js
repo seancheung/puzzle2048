@@ -25,17 +25,21 @@ export default class Tile extends GameObjects.Container {
         this.refresh();
     }
 
-    refresh() {
-        this.upgradable = true;
-        this.text.setText(this.value);
-        this.tile.setTint(TILE.COLORS[this.value]);
-        if (this.value > 0) {
+    showValue(value) {
+        this.text.setText(value);
+        this.tile.setTint(TILE.COLORS[value]);
+        if (value > 0) {
             this.alpha = 1;
             this.visible = true;
         } else {
             this.alpha = 0;
             this.visible = false;
         }
+    }
+
+    refresh() {
+        this.upgradable = true;
+        this.showValue(this.value);
     }
 
 }

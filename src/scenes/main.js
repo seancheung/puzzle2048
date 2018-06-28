@@ -1,4 +1,4 @@
-import { Scene, Utils } from 'phaser';
+import { Scene, Utils, Geom } from 'phaser';
 import { TILE, BOARDCOLOR } from '../config';
 import Tile from '../prefabs/tile';
 import Panel from '../prefabs/panel';
@@ -57,6 +57,7 @@ export default class extends Scene {
             }
         });
         this.input.keyboard.on('keydown', this.handleKey, this);
+        this.input.on('pointerup', this.handleSwipe, this);
     }
 
     handleKey(e) {
@@ -87,6 +88,34 @@ export default class extends Scene {
                 }
                 this.handleMove(1, 0);
                 break;
+            }
+        }
+    }
+
+    handleSwipe(e) {
+        const swipeTime = e.upTime - e.downTime;
+        const swipe = new Geom.Point(e.upX - e.downX, e.upY - e.downY);
+        const swipeMagnitude = Geom.Point.GetMagnitude(swipe);
+        const swipeNormal = new Geom.Point(
+            swipe.x / swipeMagnitude,
+            swipe.y / swipeMagnitude
+        );
+        if (
+            swipeMagnitude > 20 &&
+            swipeTime < 1000 &&
+            (Math.abs(swipeNormal.y) > 0.8 || Math.abs(swipeNormal.x) > 0.8)
+        ) {
+            if (swipeNormal.x > 0.8) {
+                this.handleMove(0, 1);
+            }
+            if (swipeNormal.x < -0.8) {
+                this.handleMove(0, -1);
+            }
+            if (swipeNormal.y > 0.8) {
+                this.handleMove(1, 0);
+            }
+            if (swipeNormal.y < -0.8) {
+                this.handleMove(-1, 0);
             }
         }
     }
@@ -189,7 +218,7 @@ export default class extends Scene {
 
     transformTile(tile, row, col) {
         this.movingTiles++;
-        tile.setValue(this.tiles[row][col].value);
+        tile.showValue(this.tiles[row][col].value);
         this.tweens.add({
             targets: tile,
             scaleX: 1.1,
