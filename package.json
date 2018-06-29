@@ -6,7 +6,8 @@
         "dev": "webpack --mode=development && cordova prepare browser",
         "pack": "webpack --mode=production",
         "serve": "cordova run browser",
-        "build:android": "npm run pack && cordova build android"
+        "build:android": "npm run pack && cordova prepare android && cordova build android",
+        "android": "npm run pack && cordova run android"
     },
     "dependencies": {
         "cordova-android": "^7.0.0",

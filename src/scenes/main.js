@@ -30,6 +30,8 @@ export default class extends Scene {
             }
         }
         this.canMove = false;
+        this.input.keyboard.on('keydown', this.handleKey, this);
+        this.input.on('pointerup', this.handleSwipe, this);
         this.populate();
         this.populate();
     }
@@ -56,8 +58,6 @@ export default class extends Scene {
                 tween.parent.scene.canMove = true;
             }
         });
-        this.input.keyboard.on('keydown', this.handleKey, this);
-        this.input.on('pointerup', this.handleSwipe, this);
     }
 
     handleKey(e) {
@@ -88,34 +88,39 @@ export default class extends Scene {
                 }
                 this.handleMove(1, 0);
                 break;
+            case 'Escape':
+                this.scene.restart();
+                break;
             }
         }
     }
 
     handleSwipe(e) {
         const swipeTime = e.upTime - e.downTime;
-        const swipe = new Geom.Point(e.upX - e.downX, e.upY - e.downY);
-        const swipeMagnitude = Geom.Point.GetMagnitude(swipe);
-        const swipeNormal = new Geom.Point(
-            swipe.x / swipeMagnitude,
-            swipe.y / swipeMagnitude
-        );
-        if (
-            swipeMagnitude > 20 &&
-            swipeTime < 1000 &&
-            (Math.abs(swipeNormal.y) > 0.8 || Math.abs(swipeNormal.x) > 0.8)
-        ) {
-            if (swipeNormal.x > 0.8) {
-                this.handleMove(0, 1);
-            }
-            if (swipeNormal.x < -0.8) {
-                this.handleMove(0, -1);
-            }
-            if (swipeNormal.y > 0.8) {
-                this.handleMove(1, 0);
-            }
-            if (swipeNormal.y < -0.8) {
-                this.handleMove(-1, 0);
+        if (swipeTime < 1000) {
+            const swipe = new Geom.Point(e.upX - e.downX, e.upY - e.downY);
+            const swipeMagnitude = Geom.Point.GetMagnitude(swipe);
+            if (swipeMagnitude > 20) {
+                const swipeNormal = new Geom.Point(
+                    swipe.x / swipeMagnitude,
+                    swipe.y / swipeMagnitude
+                );
+                if (
+                    Math.abs(swipeNormal.y) > 0.8 ||
+                    Math.abs(swipeNormal.x) > 0.8
+                ) {
+                    if (Math.abs(swipeNormal.x) > Math.abs(swipeNormal.y)) {
+                        if (swipeNormal.x > 0) {
+                            this.handleMove(0, 1);
+                        } else {
+                            this.handleMove(0, -1);
+                        }
+                    } else if (swipeNormal.y > 0) {
+                        this.handleMove(1, 0);
+                    } else {
+                        this.handleMove(-1, 0);
+                    }
+                }
             }
         }
     }
