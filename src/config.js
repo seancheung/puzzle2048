@@ -36,3 +36,4 @@ export const TILE = {
         65536: 0xff0000
     }
 };
+export const MAX = 2048;

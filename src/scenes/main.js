@@ -1,11 +1,17 @@
 import { Scene, Utils, Geom } from 'phaser';
-import { TILE, BOARDCOLOR } from '../config';
+import { TILE, BOARDCOLOR, MAX } from '../config';
 import Tile from '../prefabs/tile';
 import Panel from '../prefabs/panel';
 import Button from '../prefabs/button';
 import Label from '../prefabs/label';
 import 'assets/icons.png';
 import 'assets/icons.json';
+
+const STATE = {
+    NONE: 0,
+    WIN: 1,
+    LOSE: 2
+};
 
 export default class extends Scene {
 
@@ -46,6 +52,7 @@ export default class extends Scene {
             this.sys.game.config.width / 2,
             this.sys.game.config.height - this.countLabel.height * 2
         );
+        this.state = STATE.NONE;
         this.tiles = [];
         this.histories = [];
         this.capture = null;
@@ -265,8 +272,10 @@ export default class extends Scene {
                 }
                 if (this.movingTiles == 0) {
                     this.resetTiles();
-                    this.populate();
-                    this.captureTiles();
+                    if (this.checkTiles()) {
+                        this.populate();
+                        this.captureTiles();
+                    }
                 }
             }
         });
@@ -286,8 +295,10 @@ export default class extends Scene {
                 this.movingTiles--;
                 if (this.movingTiles == 0) {
                     this.resetTiles();
-                    this.populate();
-                    this.captureTiles();
+                    if (this.checkTiles()) {
+                        this.populate();
+                        this.captureTiles();
+                    }
                 }
             }
         });
@@ -301,6 +312,32 @@ export default class extends Scene {
                 this.tiles[i][j].refresh();
             }
         }
+    }
+
+    checkTiles() {
+        if (this.state !== STATE.NONE) {
+            return false;
+        }
+        let count = 0,
+            win;
+        for (let i = 0; i < TILE.STEP; i++) {
+            for (let j = 0; j < TILE.STEP; j++) {
+                if (this.tiles[i][j].value >= MAX) {
+                    win = true;
+                    break;
+                }
+                if (this.tiles[i][j].value > 0) {
+                    count++;
+                }
+            }
+        }
+        if (win) {
+            this.state = STATE.WIN;
+        } else if (count >= TILE.STEP * TILE.STEP) {
+            this.state = STATE.LOSE;
+        }
+
+        return this.state === STATE.NONE;
     }
 
     captureTiles() {
