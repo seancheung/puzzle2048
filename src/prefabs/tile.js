@@ -7,7 +7,7 @@ export default class Tile extends GameObjects.Container {
         super(scene, x, y);
         this.value = value || 0;
         this.upgradable = false;
-        const tile = new GameObjects.Sprite(scene, 0, 0, 'tile');
+        const tile = new GameObjects.Sprite(scene, 0, 0, 'icons', 'tile.png');
         const text = new GameObjects.Text(scene, 0, 0, this.value, {
             font: 'bold 64px Arial',
             align: 'center',

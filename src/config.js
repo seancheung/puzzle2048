@@ -2,6 +2,16 @@ export const DPR = 3;
 export const SCALE_RATIO = window.devicePixelRatio / DPR;
 export const BACKGROUND = 0x626567;
 export const BOARDCOLOR = 0x444444;
+export const BUTTON = {
+    NORMAL: {
+        SCALE: 1,
+        COLOR: 0xffffff
+    },
+    CLICKED: {
+        SCALE: 0.95,
+        COLOR: 0xdddddd
+    }
+};
 export const TILE = {
     STEP: 4,
     SIZE: 200,

@@ -1,0 +1,209 @@
+{
+	"textures": [
+		{
+			"image": "icons.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 192,
+				"h": 376
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "tile.png",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 200,
+						"h": 200
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 9,
+						"w": 184,
+						"h": 185
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 184,
+						"h": 185
+					}
+				},
+				{
+					"filename": "clock-circular-outline.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 1,
+						"y": 187,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "refresh-button.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 1,
+						"y": 253,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "trophy.png",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 0,
+						"w": 56,
+						"h": 64
+					},
+					"frame": {
+						"x": 1,
+						"y": 319,
+						"w": 56,
+						"h": 64
+					}
+				},
+				{
+					"filename": "robot.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 187,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "line-chart.png",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 64,
+						"h": 58
+					},
+					"frame": {
+						"x": 133,
+						"y": 187,
+						"w": 64,
+						"h": 58
+					}
+				},
+				{
+					"filename": "round-info-button.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 253,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "undo-button.png",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 0,
+						"w": 56,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 319,
+						"w": 56,
+						"h": 64
+					}
+				},
+				{
+					"filename": "three-dots-more-indicator.png",
+					"rotated": true,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 23,
+						"w": 64,
+						"h": 18
+					},
+					"frame": {
+						"x": 133,
+						"y": 253,
+						"w": 64,
+						"h": 18
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:81ed3b39723b2ea5457e2e757fa5ce04:3494c80177a62ef47c010a743b50b854:b5c5bd7252d2048fecbb1bda1760f9ef$"
+	}
+}

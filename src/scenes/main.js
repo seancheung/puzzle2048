@@ -2,6 +2,10 @@ import { Scene, Utils, Geom } from 'phaser';
 import { TILE, BOARDCOLOR } from '../config';
 import Tile from '../prefabs/tile';
 import Panel from '../prefabs/panel';
+import Button from '../prefabs/button';
+import Label from '../prefabs/label';
+import 'assets/icons.png';
+import 'assets/icons.json';
 
 export default class extends Scene {
 
@@ -9,11 +13,44 @@ export default class extends Scene {
         super({ key: 'main' });
     }
 
+    preload() {
+        this.load.atlas('icons', 'assets/icons.png', 'assets/icons.json');
+    }
+
     create() {
         this.events.on('resize', this.resize, this);
         this.panel = new Panel(this, TILE.SIZE * TILE.STEP, BOARDCOLOR);
+        const undo = new Button(this, 0, 0, 'undo-button.png', () =>
+            this.undo()
+        );
         this.children.add(this.panel);
+        this.children.add(undo);
+        undo.setPosition(this.sys.game.config.width - undo.width, undo.height);
+        const about = new Button(this, 0, 0, 'round-info-button.png');
+        this.children.add(about);
+        about.setPosition(about.width, about.height);
+        const restart = new Button(this, 0, 0, 'refresh-button.png', () => {
+            this.scene.restart();
+        });
+        this.children.add(restart);
+        restart.setPosition(this.sys.game.config.width / 2, restart.height);
+        this.timeLable = new Label(this, 0, 0, '--:--:--');
+        this.children.add(this.timeLable);
+        this.timeLable.setPosition(
+            this.timeLable.width,
+            this.sys.game.config.height - this.timeLable.height * 2
+        );
+        this.countLabel = new Label(this, 0, 0, '000');
+        this.children.add(this.countLabel);
+        this.countLabel.setPosition(
+            this.sys.game.config.width / 2,
+            this.sys.game.config.height - this.countLabel.height * 2
+        );
         this.tiles = [];
+        this.histories = [];
+        this.capture = null;
+        this.steps = 0;
+        this.elapsedtime = 0;
         this.tileGroup = this.add.group();
         for (let i = 0; i < TILE.STEP; i++) {
             this.tiles[i] = [];
@@ -34,6 +71,19 @@ export default class extends Scene {
         this.input.on('pointerup', this.handleSwipe, this);
         this.populate();
         this.populate();
+        this.captureTiles();
+    }
+
+    update(time, delta) {
+        this.elapsedtime += delta;
+        const elapsed = Math.floor(this.elapsedtime / 1000);
+        let h = Math.floor(elapsed / 3600);
+        let m = Math.floor((elapsed - h * 3600) / 60);
+        let s = elapsed - h * 3600 - m * 60;
+        h = `0${h}`.slice(-2);
+        m = `0${m}`.slice(-2);
+        s = `0${s}`.slice(-2);
+        this.timeLable.setText(`${h}:${m}:${s}`);
     }
 
     populate(value) {
@@ -208,14 +258,15 @@ export default class extends Scene {
             x: col * TILE.SIZE + TILE.SIZE / 2,
             y: row * TILE.SIZE + TILE.SIZE / 2,
             duration: TILE.SPEED * distance,
-            onComplete(tween) {
-                tween.parent.scene.movingTiles--;
+            onComplete: () => {
+                this.movingTiles--;
                 if (changeNumber) {
-                    tween.parent.scene.transformTile(tile, row, col);
+                    this.transformTile(tile, row, col);
                 }
-                if (tween.parent.scene.movingTiles == 0) {
-                    tween.parent.scene.resetTiles();
-                    tween.parent.scene.populate();
+                if (this.movingTiles == 0) {
+                    this.resetTiles();
+                    this.populate();
+                    this.captureTiles();
                 }
             }
         });
@@ -231,11 +282,12 @@ export default class extends Scene {
             duration: TILE.SPEED,
             yoyo: true,
             repeat: 1,
-            onComplete(tween) {
-                tween.parent.scene.movingTiles--;
-                if (tween.parent.scene.movingTiles == 0) {
-                    tween.parent.scene.resetTiles();
-                    tween.parent.scene.populate();
+            onComplete: () => {
+                this.movingTiles--;
+                if (this.movingTiles == 0) {
+                    this.resetTiles();
+                    this.populate();
+                    this.captureTiles();
                 }
             }
         });
@@ -248,6 +300,35 @@ export default class extends Scene {
                 this.tiles[i][j].y = i * TILE.SIZE + TILE.SIZE / 2;
                 this.tiles[i][j].refresh();
             }
+        }
+    }
+
+    captureTiles() {
+        const capture = [];
+        for (let i = 0; i < TILE.STEP; i++) {
+            capture[i] = [];
+            for (let j = 0; j < TILE.STEP; j++) {
+                capture[i][j] = this.tiles[i][j].value;
+            }
+        }
+        if (this.capture) {
+            this.histories.push(this.capture);
+            this.steps++;
+        }
+        this.capture = capture;
+        this.countLabel.setText(`00${this.steps}`.slice(-3));
+    }
+
+    undo() {
+        const history = this.histories.pop();
+        if (history) {
+            for (let i = 0; i < TILE.STEP; i++) {
+                for (let j = 0; j < TILE.STEP; j++) {
+                    this.tiles[i][j].setValue(history[i][j]);
+                }
+            }
+            this.resetTiles();
+            this.capture = history;
         }
     }
 

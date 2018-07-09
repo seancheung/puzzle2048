@@ -15,6 +15,7 @@ module.exports = mode => {
             rules: [
                 { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
                 {
+                    type: 'javascript/auto',
                     test: /[\\/]res[\\/]assets[\\/]/,
                     use: [
                         {
