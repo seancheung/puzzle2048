@@ -40,7 +40,7 @@ export default class extends Scene {
             this.timeLable.width,
             this.sys.game.config.height - this.timeLable.height * 2
         );
-        this.countLabel = new Label(this, 0, 0, '000');
+        this.countLabel = new Label(this, 0, 0, '---');
         this.children.add(this.countLabel);
         this.countLabel.setPosition(
             this.sys.game.config.width / 2,
@@ -68,7 +68,7 @@ export default class extends Scene {
         }
         this.canMove = false;
         this.input.keyboard.on('keydown', this.handleKey, this);
-        this.input.on('pointerup', this.handleSwipe, this);
+        this.panel.on('pointerup', this.handleSwipe, this);
         this.populate();
         this.populate();
         this.captureTiles();

@@ -1,13 +1,15 @@
-import { GameObjects } from 'phaser';
+import { GameObjects, Geom } from 'phaser';
 
 export default class Panel extends GameObjects.Container {
 
     constructor(scene, size, color) {
         super(scene);
         this.size = size;
-        const board = new GameObjects.Graphics(scene, { fillStyle: { color } }).fillRect(0, 0, size, size);
+        const shape = new Geom.Rectangle(0, 0, size, size);
+        const board = new GameObjects.Graphics(scene, { fillStyle: { color } }).fillRectShape(shape);
         this.add(board);
         this.resize();
+        this.setInteractive(shape, Geom.Rectangle.Contains);
     }
 
     resize() {
